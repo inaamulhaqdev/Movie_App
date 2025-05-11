@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_test_app/core/constants/api_constants.dart';
 import 'package:movie_test_app/core/constants/app_assets.dart';
 import 'package:movie_test_app/core/constants/app_colors.dart';
+import 'package:movie_test_app/core/utils/responsive_size_util.dart';
 import 'package:movie_test_app/features/movies/domain/models/movie_model.dart';
 
 class SearchResultCard extends StatelessWidget {
@@ -23,36 +24,42 @@ class SearchResultCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 20),
+        margin: EdgeInsets.only(bottom: ResponsiveSizeUtil.adaptiveHeight(20)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: ResponsiveSizeUtil.adaptiveBorderRadius(10),
               child:
                   movie.posterPath != null
                       ? Image.network(
                         '${ApiConstants.baseImageUrl}${movie.posterPath}',
-                        width: 130,
-                        height: 100,
+                        width: ResponsiveSizeUtil.adaptiveWidth(130),
+                        height: ResponsiveSizeUtil.adaptiveHeight(100),
                         fit: BoxFit.fitWidth,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
-                            width: 70,
-                            height: 100,
+                            width: ResponsiveSizeUtil.adaptiveWidth(70),
+                            height: ResponsiveSizeUtil.adaptiveHeight(100),
                             color: Colors.grey[300],
-                            child: const Icon(Icons.movie),
+                            child: Icon(
+                              Icons.movie,
+                              size: ResponsiveSizeUtil.adaptiveWidth(24),
+                            ),
                           );
                         },
                       )
                       : Container(
-                        width: 70,
-                        height: 100,
+                        width: ResponsiveSizeUtil.adaptiveWidth(70),
+                        height: ResponsiveSizeUtil.adaptiveHeight(100),
                         color: Colors.grey[300],
-                        child: const Icon(Icons.movie),
+                        child: Icon(
+                          Icons.movie,
+                          size: ResponsiveSizeUtil.adaptiveWidth(24),
+                        ),
                       ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(16)),
 
             Expanded(
               child: Row(
@@ -62,33 +69,33 @@ class SearchResultCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 14),
+                        SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(14)),
                         Text(
                           movie.title,
-                          style: const TextStyle(
-                            fontSize: 16,
+                          style: TextStyle(
+                            fontSize: ResponsiveSizeUtil.adaptiveFontSize(16),
                             fontWeight: FontWeight.w500,
                             color: AppColors.black,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(4)),
                         Text(
                           category,
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
                             color: AppColors.dividerGray,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(8)),
                   Image.asset(
                     AppAssets.threeDots,
-                    width: 20,
-                    height: 20,
+                    width: ResponsiveSizeUtil.adaptiveWidth(20),
+                    height: ResponsiveSizeUtil.adaptiveHeight(20),
                     color: AppColors.accentBlue,
                   ),
                 ],
@@ -97,7 +104,11 @@ class SearchResultCard extends StatelessWidget {
 
             if (onMoreTap != null)
               IconButton(
-                icon: Icon(Icons.more_horiz, color: Colors.blue[300]),
+                icon: Icon(
+                  Icons.more_horiz,
+                  color: Colors.blue[300],
+                  size: ResponsiveSizeUtil.adaptiveWidth(24),
+                ),
                 onPressed: onMoreTap,
               ),
           ],

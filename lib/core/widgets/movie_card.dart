@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_test_app/core/constants/api_constants.dart';
+import 'package:movie_test_app/core/utils/responsive_size_util.dart';
 import 'package:movie_test_app/core/widgets/optimized_cached_image.dart';
 import 'package:movie_test_app/core/widgets/optimized_container.dart';
 import 'package:movie_test_app/features/movies/domain/models/movie_model.dart';
@@ -15,20 +16,20 @@ class MovieCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: OptimizedContainer(
-        margin: const EdgeInsets.only(bottom: 24),
-        height: 200,
+        margin: EdgeInsets.only(bottom: ResponsiveSizeUtil.adaptiveHeight(16)),
+        height: ResponsiveSizeUtil.adaptiveHeight(200),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: ResponsiveSizeUtil.adaptiveBorderRadius(16),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
+              blurRadius: ResponsiveSizeUtil.adaptiveWidth(8),
+              offset: Offset(0, ResponsiveSizeUtil.adaptiveHeight(4)),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: ResponsiveSizeUtil.adaptiveBorderRadius(16),
           child: Stack(
             fit: StackFit.expand,
             children: [
@@ -44,7 +45,10 @@ class MovieCard extends StatelessWidget {
               else
                 Container(
                   color: Colors.grey[300],
-                  child: const Icon(Icons.movie),
+                  child: Icon(
+                    Icons.movie,
+                    size: ResponsiveSizeUtil.adaptiveWidth(40),
+                  ),
                 ),
 
               OptimizedContainer(
@@ -61,14 +65,19 @@ class MovieCard extends StatelessWidget {
               ),
 
               Positioned(
-                left: 20,
-                bottom: 24,
-                child: Text(
-                  movie.title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                left: ResponsiveSizeUtil.adaptiveWidth(20),
+                bottom: ResponsiveSizeUtil.adaptiveHeight(24),
+                child: SizedBox(
+                  width: ResponsiveSizeUtil.wp(70), // Use 70% of screen width
+                  child: Text(
+                    movie.title,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: ResponsiveSizeUtil.adaptiveFontSize(18),
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),

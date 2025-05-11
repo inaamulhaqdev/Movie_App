@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_test_app/core/constants/app_assets.dart';
 import 'package:movie_test_app/core/constants/app_colors.dart';
+import 'package:movie_test_app/core/utils/responsive_size_util.dart';
 import 'package:movie_test_app/screens/theater_seat_selection.dart';
 
 class MovieTicketScreen extends StatefulWidget {
@@ -24,9 +25,13 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
+        toolbarHeight: ResponsiveSizeUtil.adaptiveHeight(100),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: AppColors.darkPurple),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.darkPurple,
+            size: ResponsiveSizeUtil.adaptiveWidth(20),
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         backgroundColor: AppColors.white,
@@ -34,18 +39,18 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
           children: [
             Text(
               widget.title,
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppColors.darkPurple,
-                fontSize: 16,
+                fontSize: ResponsiveSizeUtil.adaptiveFontSize(16),
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(5)),
             Text(
               'In theaters december 22, 2021',
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppColors.accentBlue,
-                fontSize: 12,
+                fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -58,9 +63,9 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 40),
+            SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(40)),
             _buildDateSelector(),
-            const SizedBox(height: 40),
+            SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(40)),
             _buildShowtimes(),
             const Spacer(),
             _buildSelectSeatsButton(),
@@ -74,28 +79,30 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+        Padding(
+          padding: ResponsiveSizeUtil.adaptivePadding(horizontal: 16.0),
           child: Text(
             "Date",
             style: TextStyle(
-              fontSize: 16,
+              fontSize: ResponsiveSizeUtil.adaptiveFontSize(16),
               fontWeight: FontWeight.w500,
               color: AppColors.darkPurple,
             ),
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(10)),
         SizedBox(
-          height: 40,
+          height: ResponsiveSizeUtil.adaptiveHeight(40),
           child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: ResponsiveSizeUtil.adaptivePadding(horizontal: 16),
             scrollDirection: Axis.horizontal,
             itemCount: dates.length,
             itemBuilder: (context, index) {
               final isSelected = index == selectedDateIndex;
               return Padding(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: EdgeInsets.only(
+                  right: ResponsiveSizeUtil.adaptiveWidth(8.0),
+                ),
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
@@ -103,18 +110,19 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
                     });
                   },
                   child: Container(
-                    width: 70,
+                    width: ResponsiveSizeUtil.adaptiveWidth(70),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color:
                           isSelected
                               ? AppColors.accentBlue
                               : AppColors.dividerGray,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: ResponsiveSizeUtil.adaptiveBorderRadius(10),
                     ),
                     child: Text(
                       dates[index],
                       style: TextStyle(
+                        fontSize: ResponsiveSizeUtil.adaptiveFontSize(14),
                         color: isSelected ? Colors.white : Colors.black,
                         fontWeight: FontWeight.w500,
                       ),
@@ -131,13 +139,13 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
 
   Widget _buildShowtimes() {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.3,
+      height: ResponsiveSizeUtil.hp(30), // 30% of screen height
       child: ListView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: ResponsiveSizeUtil.adaptivePadding(horizontal: 16.0),
         children: [
           _buildShowtime("12:30", "Cinetech + Hall 1", 50, 2500),
-          const SizedBox(width: 12),
+          SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(12)),
           _buildShowtime("13:30", "Cinetech", 75, 3000),
         ],
       ),
@@ -146,7 +154,7 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
 
   Widget _buildShowtime(String time, String hallName, int price, int bonus) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.7,
+      width: ResponsiveSizeUtil.wp(70), // 70% of screen width
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -154,33 +162,33 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
             children: [
               Text(
                 time,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  fontSize: 12,
+                  fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
                   color: AppColors.darkPurple,
                 ),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(8)),
               Text(
                 hallName,
-                style: const TextStyle(
+                style: TextStyle(
                   color: AppColors.textGray,
-                  fontSize: 12,
+                  fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
                   fontWeight: FontWeight.w400,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(8)),
           Container(
-            height: MediaQuery.of(context).size.height * 0.20,
+            height: ResponsiveSizeUtil.hp(20), // 20% of screen height
             decoration: BoxDecoration(
               border: Border.all(color: AppColors.accentBlue, width: 1),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: ResponsiveSizeUtil.adaptiveBorderRadius(10),
             ),
             child: _buildSeatMap(),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(10)),
 
           RichText(
             text: TextSpan(
@@ -188,15 +196,15 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
                 TextSpan(
                   text: "From ",
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
                     color: AppColors.darkGray,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 TextSpan(
                   text: "$price\$ ",
-                  style: const TextStyle(
-                    fontSize: 12,
+                  style: TextStyle(
+                    fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
                     color: AppColors.darkPurple,
                     fontWeight: FontWeight.bold,
                   ),
@@ -204,15 +212,15 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
                 TextSpan(
                   text: "or ",
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
                     color: AppColors.darkGray,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 TextSpan(
                   text: "$bonus bonus",
-                  style: const TextStyle(
-                    fontSize: 12,
+                  style: TextStyle(
+                    fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
                     color: AppColors.darkPurple,
                     fontWeight: FontWeight.bold,
                   ),
@@ -230,7 +238,7 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           return Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: ResponsiveSizeUtil.adaptivePadding(
               horizontal: 36.0,
               vertical: 36.0,
             ),
@@ -238,7 +246,7 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildScreenIndicator(constraints.maxWidth * 0.8),
-                const SizedBox(height: 10),
+                SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(10)),
                 Expanded(child: _buildSeatGrid()),
               ],
             ),
@@ -249,7 +257,11 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
   }
 
   Widget _buildScreenIndicator(double width) {
-    return Image.asset(AppAssets.border);
+    return Image.asset(
+      AppAssets.border,
+      width: width,
+      height: ResponsiveSizeUtil.adaptiveHeight(10),
+    );
   }
 
   Widget _buildSeatGrid() {
@@ -288,11 +300,11 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
 
     return GridView.builder(
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 14,
         childAspectRatio: 1.8,
-        crossAxisSpacing: 4,
-        mainAxisSpacing: 4,
+        crossAxisSpacing: ResponsiveSizeUtil.adaptiveWidth(4),
+        mainAxisSpacing: ResponsiveSizeUtil.adaptiveHeight(4),
       ),
       itemCount: seatLayout.length * seatLayout[0].length,
       itemBuilder: (context, index) {
@@ -302,8 +314,8 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
 
         return Image.asset(
           AppAssets.seat,
-          width: 8,
-          height: 8,
+          width: ResponsiveSizeUtil.adaptiveWidth(8),
+          height: ResponsiveSizeUtil.adaptiveHeight(8),
           color: seatColors[seatType],
           colorBlendMode: BlendMode.srcIn,
         );
@@ -313,10 +325,13 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
 
   Widget _buildSelectSeatsButton() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 26.0, vertical: 16),
+      padding: ResponsiveSizeUtil.adaptivePadding(
+        horizontal: 26.0,
+        vertical: 16,
+      ),
       child: SizedBox(
         width: double.infinity,
-        height: 50,
+        height: ResponsiveSizeUtil.adaptiveHeight(50),
         child: ElevatedButton(
           onPressed: () {
             Navigator.push(
@@ -329,13 +344,13 @@ class _MovieTicketScreenState extends State<MovieTicketScreen> {
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.accentBlue,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: ResponsiveSizeUtil.adaptiveBorderRadius(8),
             ),
           ),
-          child: const Text(
+          child: Text(
             "Select Seats",
             style: TextStyle(
-              fontSize: 14,
+              fontSize: ResponsiveSizeUtil.adaptiveFontSize(14),
               fontWeight: FontWeight.w600,
               color: AppColors.white,
             ),

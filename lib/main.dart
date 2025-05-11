@@ -5,6 +5,7 @@ import 'package:movie_test_app/core/theme/app_theme.dart';
 import 'package:movie_test_app/core/utils/navigation_service.dart';
 import 'package:movie_test_app/core/utils/performance_monitor.dart';
 import 'package:movie_test_app/core/utils/service_locator.dart';
+import 'package:movie_test_app/core/utils/responsive_size_util.dart';
 import 'package:movie_test_app/features/movies/presentation/providers/movie_provider.dart';
 
 void main() async {
@@ -50,6 +51,18 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
         darkTheme: AppTheme.darkTheme,
         initialRoute: AppRoutes.home,
         onGenerateRoute: AppRoutes.onGenerateRoute,
+        builder: (context, child) {
+          // Initialize responsive size util here
+          ResponsiveSizeUtil.init(context);
+
+          // Return the child with appropriate text scaling
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaleFactor: 1.0, // Lock text scaling
+            ),
+            child: child!,
+          );
+        },
       ),
     );
   }

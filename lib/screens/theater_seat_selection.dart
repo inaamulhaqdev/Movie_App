@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_test_app/core/constants/app_assets.dart';
 import 'package:movie_test_app/core/constants/app_colors.dart';
+import 'package:movie_test_app/core/utils/responsive_size_util.dart';
 
 class TheaterSeatSelectionScreen extends StatefulWidget {
   const TheaterSeatSelectionScreen({super.key});
@@ -54,9 +55,13 @@ class TheaterSeatSelectionScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
+        toolbarHeight: ResponsiveSizeUtil.adaptiveHeight(100),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: AppColors.darkPurple),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.darkPurple,
+            size: ResponsiveSizeUtil.adaptiveWidth(20),
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         backgroundColor: AppColors.white,
@@ -64,18 +69,18 @@ class TheaterSeatSelectionScreenState
           children: [
             Text(
               'The King\'s Man',
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppColors.darkPurple,
-                fontSize: 16,
+                fontSize: ResponsiveSizeUtil.adaptiveFontSize(16),
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(5)),
             Text(
               'March 5, 2021 | 12:30 Hall 1',
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppColors.accentBlue,
-                fontSize: 12,
+                fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -101,27 +106,30 @@ class TheaterSeatSelectionScreenState
       color: AppColors.lightGray,
       child: Column(
         children: [
-          const SizedBox(height: 20),
+          SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(20)),
 
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Image.asset(AppAssets.screen),
+            padding: ResponsiveSizeUtil.adaptivePadding(horizontal: 30),
+            child: Image.asset(
+              AppAssets.screen,
+              width: ResponsiveSizeUtil.wp(80), // 80% of screen width
+            ),
           ),
-          const Text(
+          Text(
             "SCREEN",
             style: TextStyle(
-              fontSize: 10,
+              fontSize: ResponsiveSizeUtil.adaptiveFontSize(10),
               fontWeight: FontWeight.w500,
               color: Colors.grey,
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(20)),
           Expanded(
             child: SingleChildScrollView(
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: ResponsiveSizeUtil.adaptivePadding(horizontal: 20.0),
                 child: Column(
                   children: [
                     for (int row = 1; row <= 10; row++) _buildSeatRow(row),
@@ -132,36 +140,36 @@ class TheaterSeatSelectionScreenState
           ),
           // Zoom buttons
           Padding(
-            padding: const EdgeInsets.only(bottom: 12.0, top: 4.0),
+            padding: ResponsiveSizeUtil.adaptivePadding(bottom: 12.0, top: 4.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 _buildZoomButton(Icons.add, _zoomIn),
-                SizedBox(width: 10),
+                SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(10)),
                 _buildZoomButton(Icons.remove, _zoomOut),
-                SizedBox(width: 12),
+                SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(12)),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: ResponsiveSizeUtil.adaptivePadding(horizontal: 16),
             child: Scrollbar(
               controller: _scrollController,
               thumbVisibility: true,
               trackVisibility: true,
-              thickness: 6,
-              radius: const Radius.circular(50.0),
+              thickness: ResponsiveSizeUtil.adaptiveWidth(6),
+              radius: Radius.circular(ResponsiveSizeUtil.adaptiveWidth(50.0)),
               child: Container(
-                height: 5,
+                height: ResponsiveSizeUtil.adaptiveHeight(5),
                 decoration: BoxDecoration(
                   color: AppColors.dividerGray,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: ResponsiveSizeUtil.adaptiveBorderRadius(20),
                 ),
               ),
             ),
           ),
 
-          const SizedBox(height: 10),
+          SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(10)),
         ],
       ),
     );
@@ -171,16 +179,16 @@ class TheaterSeatSelectionScreenState
     int totalColumns = 18;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: EdgeInsets.only(bottom: ResponsiveSizeUtil.adaptiveHeight(8.0)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            width: 20,
+            width: ResponsiveSizeUtil.adaptiveWidth(20),
             child: Text(
               '$rowNumber',
               style: TextStyle(
-                fontSize: 6,
+                fontSize: ResponsiveSizeUtil.adaptiveFontSize(6),
                 fontWeight: FontWeight.w700,
                 color: AppColors.darkPurple,
               ),
@@ -195,13 +203,14 @@ class TheaterSeatSelectionScreenState
             ],
           ),
 
-          const SizedBox(width: 20),
+          SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(20)),
         ],
       ),
     );
   }
 
   SeatType _getSeatType(int row, int col) {
+    // Existing method - no changes needed
     if (row == 10) {
       return SeatType.vip;
     }
@@ -227,7 +236,7 @@ class TheaterSeatSelectionScreenState
     bool isGap = (col == 3 || col == 9 || col == 15);
 
     if (isGap) {
-      return SizedBox(width: 20 * _zoomScale);
+      return SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(20) * _zoomScale);
     }
 
     String seatId = '$row-$col';
@@ -266,8 +275,8 @@ class TheaterSeatSelectionScreenState
       },
       child: Image.asset(
         AppAssets.seat,
-        height: 12 * _zoomScale,
-        width: 16 * _zoomScale,
+        height: ResponsiveSizeUtil.adaptiveHeight(12) * _zoomScale,
+        width: ResponsiveSizeUtil.adaptiveWidth(16) * _zoomScale,
         color: seatColor,
       ),
     );
@@ -278,21 +287,24 @@ class TheaterSeatSelectionScreenState
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.white,
-
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.4),
             spreadRadius: 1,
             blurRadius: 2,
-            offset: const Offset(0, 1),
+            offset: Offset(0, ResponsiveSizeUtil.adaptiveHeight(1)),
           ),
         ],
       ),
       child: SizedBox(
-        height: 40,
-        width: 40,
+        height: ResponsiveSizeUtil.adaptiveHeight(40),
+        width: ResponsiveSizeUtil.adaptiveWidth(40),
         child: IconButton(
-          icon: Icon(icon, color: AppColors.black, size: 18),
+          icon: Icon(
+            icon,
+            color: AppColors.black,
+            size: ResponsiveSizeUtil.adaptiveWidth(18),
+          ),
           onPressed: onPressed,
         ),
       ),
@@ -308,7 +320,7 @@ class TheaterSeatSelectionScreenState
             color: Colors.grey.withOpacity(0.2),
             spreadRadius: 1,
             blurRadius: 4,
-            offset: const Offset(0, -2),
+            offset: Offset(0, ResponsiveSizeUtil.adaptiveHeight(-2)),
           ),
         ],
       ),
@@ -316,36 +328,49 @@ class TheaterSeatSelectionScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+            padding: ResponsiveSizeUtil.adaptivePadding(
+              left: 20,
+              top: 15,
+              right: 20,
+              bottom: 15,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildSeatLegend(AppColors.gold, "Selected"),
                 _buildSeatLegend(AppColors.textGray, "Not available  "),
-                SizedBox(width: 40),
+                SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(40)),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+            padding: ResponsiveSizeUtil.adaptivePadding(
+              left: 20,
+              top: 15,
+              right: 20,
+              bottom: 15,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildSeatLegend(Colors.deepPurple, "VIP (150\$)"),
                 _buildSeatLegend(AppColors.accentBlue, "Regular (50 \$)"),
-                SizedBox(width: 40),
+                SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(40)),
               ],
             ),
           ),
 
-          const SizedBox(height: 10),
+          SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(10)),
           if (selectedSeats.isNotEmpty)
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              margin: ResponsiveSizeUtil.adaptivePadding(horizontal: 20),
+              padding: ResponsiveSizeUtil.adaptivePadding(
+                horizontal: 16,
+                vertical: 8,
+              ),
               decoration: BoxDecoration(
                 color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: ResponsiveSizeUtil.adaptiveBorderRadius(10),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -355,8 +380,8 @@ class TheaterSeatSelectionScreenState
                       children: [
                         TextSpan(
                           text: "4 / ",
-                          style: const TextStyle(
-                            fontSize: 14,
+                          style: TextStyle(
+                            fontSize: ResponsiveSizeUtil.adaptiveFontSize(14),
                             color: AppColors.darkPurple,
                             fontWeight: FontWeight.w500,
                           ),
@@ -364,7 +389,7 @@ class TheaterSeatSelectionScreenState
                         TextSpan(
                           text: "3 row",
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
                             color: AppColors.darkGray,
                             fontWeight: FontWeight.w500,
                           ),
@@ -372,7 +397,7 @@ class TheaterSeatSelectionScreenState
                       ],
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(10)),
 
                   GestureDetector(
                     onTap: () {
@@ -381,11 +406,13 @@ class TheaterSeatSelectionScreenState
                       });
                     },
                     child: Container(
-                      padding: const EdgeInsets.all(2),
-                      decoration: BoxDecoration(shape: BoxShape.circle),
+                      padding: EdgeInsets.all(
+                        ResponsiveSizeUtil.adaptiveWidth(2),
+                      ),
+                      decoration: const BoxDecoration(shape: BoxShape.circle),
                       child: Icon(
                         Icons.close,
-                        size: 14,
+                        size: ResponsiveSizeUtil.adaptiveWidth(14),
                         color: AppColors.darkPurple,
                       ),
                     ),
@@ -393,19 +420,19 @@ class TheaterSeatSelectionScreenState
                 ],
               ),
             ),
-          const SizedBox(height: 20),
+          SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(20)),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: ResponsiveSizeUtil.adaptivePadding(horizontal: 20),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(
+                  padding: ResponsiveSizeUtil.adaptivePadding(
                     horizontal: 30,
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
                     color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: ResponsiveSizeUtil.adaptiveBorderRadius(12),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -413,15 +440,15 @@ class TheaterSeatSelectionScreenState
                       Text(
                         "Total Price",
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: ResponsiveSizeUtil.adaptiveFontSize(10),
                           color: AppColors.darkGray,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                      const Text(
+                      Text(
                         "\$ 50",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: ResponsiveSizeUtil.adaptiveFontSize(16),
                           fontWeight: FontWeight.w600,
                           color: AppColors.darkPurple,
                         ),
@@ -429,22 +456,24 @@ class TheaterSeatSelectionScreenState
                     ],
                   ),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(10)),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: selectedSeats.isNotEmpty ? () {} : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.accentBlue,
                       disabledBackgroundColor: Colors.grey[300],
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: ResponsiveSizeUtil.adaptivePadding(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: ResponsiveSizeUtil.adaptiveBorderRadius(
+                          12,
+                        ),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Proceed to pay",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: ResponsiveSizeUtil.adaptiveFontSize(16),
                         fontWeight: FontWeight.w500,
                         color: Colors.white,
                       ),
@@ -454,7 +483,7 @@ class TheaterSeatSelectionScreenState
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: ResponsiveSizeUtil.adaptiveHeight(20)),
         ],
       ),
     );
@@ -463,9 +492,20 @@ class TheaterSeatSelectionScreenState
   Widget _buildSeatLegend(Color color, String label) {
     return Row(
       children: [
-        Image.asset(AppAssets.seat, color: color, height: 16, width: 17),
-        const SizedBox(width: 10),
-        Text(label, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+        Image.asset(
+          AppAssets.seat,
+          color: color,
+          height: ResponsiveSizeUtil.adaptiveHeight(16),
+          width: ResponsiveSizeUtil.adaptiveWidth(17),
+        ),
+        SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(10)),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
+            color: Colors.grey[600],
+          ),
+        ),
       ],
     );
   }

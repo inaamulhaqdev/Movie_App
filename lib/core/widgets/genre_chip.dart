@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_test_app/core/constants/app_colors.dart';
+import 'package:movie_test_app/core/utils/responsive_size_util.dart';
 
 class GenreChip extends StatelessWidget {
   final String genre;
@@ -56,12 +57,17 @@ class GenreChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+      padding: ResponsiveSizeUtil.adaptivePadding(horizontal: 8, vertical: 0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          ResponsiveSizeUtil.adaptiveWidth(50),
+        ),
+      ),
       side: const BorderSide(color: Colors.white, width: 0),
       label: Text(
         genre,
-        style: const TextStyle(
-          fontSize: 12,
+        style: TextStyle(
+          fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
           color: Colors.white,
           fontWeight: FontWeight.w600,
         ),

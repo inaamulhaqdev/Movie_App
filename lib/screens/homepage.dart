@@ -8,6 +8,7 @@ import 'package:movie_test_app/core/widgets/movie_card.dart';
 import 'package:movie_test_app/core/widgets/optimized_selector.dart';
 import 'package:movie_test_app/core/utils/state_handler.dart';
 import 'package:movie_test_app/core/utils/resource_manager.dart';
+import 'package:movie_test_app/core/utils/responsive_size_util.dart';
 import 'package:movie_test_app/features/movies/presentation/providers/movie_provider.dart';
 import 'package:movie_test_app/features/movies/domain/models/movie_model.dart';
 import 'package:movie_test_app/core/utils/ui_state.dart';
@@ -59,7 +60,8 @@ class _HomePageState extends State<HomePage>
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 200) {
+          _scrollController.position.maxScrollExtent -
+              ResponsiveSizeUtil.adaptiveHeight(200)) {
         _loadMoreMovies();
       }
     });
@@ -118,15 +120,15 @@ class _HomePageState extends State<HomePage>
       backgroundColor: AppColors.dividerGray,
       appBar: AppBar(
         backgroundColor: AppColors.white,
-        toolbarHeight: 80,
+        toolbarHeight: ResponsiveSizeUtil.adaptiveHeight(80),
         elevation: 5,
-        title: const Padding(
-          padding: EdgeInsets.all(8.0),
+        title: Padding(
+          padding: ResponsiveSizeUtil.adaptivePadding(all: 8.0),
           child: Text(
             'Watch',
             style: TextStyle(
               color: AppColors.darkPurple,
-              fontSize: 16,
+              fontSize: ResponsiveSizeUtil.adaptiveFontSize(16),
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -135,18 +137,21 @@ class _HomePageState extends State<HomePage>
           IconButton(
             icon: Image.asset(
               AppAssets.searchIcon,
-              height: 18,
-              width: 18,
+              height: ResponsiveSizeUtil.adaptiveHeight(18),
+              width: ResponsiveSizeUtil.adaptiveWidth(18),
               color: AppColors.darkPurple,
             ),
             onPressed: () => Navigator.pushNamed(context, AppRoutes.search),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(8)),
         ],
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          padding: ResponsiveSizeUtil.adaptivePadding(
+            horizontal: 16,
+            vertical: 16,
+          ),
           child: OptimizedSelector<MovieProvider, UIState<List<MovieModel>>>(
             selector: (context, provider) => provider.upcomingMoviesState,
             builder: (context, state, child) {
@@ -157,14 +162,18 @@ class _HomePageState extends State<HomePage>
                       onRefresh: _loadMovies,
                       child: ListView.builder(
                         controller: _scrollController,
-                        padding: const EdgeInsets.symmetric(vertical: 0),
+                        padding: ResponsiveSizeUtil.adaptivePadding(
+                          vertical: 0,
+                        ),
                         itemCount: movies.length + (_isLoadingMore ? 1 : 0),
                         itemBuilder: (context, index) {
                           if (index == movies.length) {
-                            return const Center(
+                            return Center(
                               child: Padding(
-                                padding: EdgeInsets.all(16.0),
-                                child: CircularProgressIndicator(),
+                                padding: ResponsiveSizeUtil.adaptivePadding(
+                                  all: 16.0,
+                                ),
+                                child: const CircularProgressIndicator(),
                               ),
                             );
                           }

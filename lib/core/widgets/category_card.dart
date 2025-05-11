@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_test_app/core/utils/responsive_size_util.dart';
 
 class CategoryCard extends StatelessWidget {
   final String category;
@@ -33,7 +34,7 @@ class CategoryCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: ResponsiveSizeUtil.adaptiveBorderRadius(12),
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -48,8 +49,14 @@ class CategoryCard extends StatelessWidget {
                   if (loadingProgress == null) return child;
                   return Container(
                     color: _getCategoryColor(category),
-                    child: const Center(
-                      child: CircularProgressIndicator(color: Colors.white),
+                    child: Center(
+                      child: SizedBox(
+                        width: ResponsiveSizeUtil.adaptiveWidth(24),
+                        height: ResponsiveSizeUtil.adaptiveHeight(24),
+                        child: const CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   );
                 },
@@ -69,13 +76,13 @@ class CategoryCard extends StatelessWidget {
             ),
 
             Positioned(
-              left: 16,
-              bottom: 16,
+              left: ResponsiveSizeUtil.adaptiveWidth(16),
+              bottom: ResponsiveSizeUtil.adaptiveHeight(16),
               child: Text(
                 category,
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
-                  fontSize: 16,
+                  fontSize: ResponsiveSizeUtil.adaptiveFontSize(16),
                   fontWeight: FontWeight.w500,
                 ),
               ),

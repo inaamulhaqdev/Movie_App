@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_test_app/core/constants/app_assets.dart';
 import 'package:movie_test_app/core/constants/app_colors.dart';
+import 'package:movie_test_app/core/utils/responsive_size_util.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final int selectedIndex;
@@ -15,18 +16,18 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 75,
+      height: ResponsiveSizeUtil.adaptiveHeight(75),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            blurRadius: ResponsiveSizeUtil.adaptiveWidth(8),
+            offset: Offset(0, ResponsiveSizeUtil.adaptiveHeight(4)),
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: ResponsiveSizeUtil.adaptiveBorderRadius(24),
         child: Theme(
           data: Theme.of(context).copyWith(
             splashColor: Colors.transparent,
@@ -40,26 +41,30 @@ class CustomBottomNavBar extends StatelessWidget {
             selectedItemColor: Colors.white,
             unselectedItemColor: AppColors.textGray,
             currentIndex: selectedIndex,
-            selectedFontSize: 12,
-            unselectedFontSize: 12,
-            selectedLabelStyle: const TextStyle(
+            selectedFontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
+            unselectedFontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
+            selectedLabelStyle: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
+              fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
             ),
             unselectedLabelStyle: TextStyle(
               color: AppColors.textGray,
               fontWeight: FontWeight.w500,
+              fontSize: ResponsiveSizeUtil.adaptiveFontSize(12),
             ),
             elevation: 0,
             onTap: onTap,
             items: [
               BottomNavigationBarItem(
                 icon: Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: EdgeInsets.only(
+                    bottom: ResponsiveSizeUtil.adaptiveHeight(8),
+                  ),
                   child: Image.asset(
                     AppAssets.dashboardIcon,
-                    width: 16,
-                    height: 16,
+                    width: ResponsiveSizeUtil.adaptiveWidth(16),
+                    height: ResponsiveSizeUtil.adaptiveHeight(16),
                     color:
                         selectedIndex == 0 ? Colors.white : AppColors.textGray,
                   ),
@@ -68,11 +73,13 @@ class CustomBottomNavBar extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: EdgeInsets.only(
+                    bottom: ResponsiveSizeUtil.adaptiveHeight(8),
+                  ),
                   child: Image.asset(
                     AppAssets.watchIcon,
-                    width: 18,
-                    height: 18,
+                    width: ResponsiveSizeUtil.adaptiveWidth(18),
+                    height: ResponsiveSizeUtil.adaptiveHeight(18),
                     color:
                         selectedIndex == 1 ? Colors.white : AppColors.textGray,
                   ),
@@ -81,11 +88,13 @@ class CustomBottomNavBar extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: EdgeInsets.only(
+                    bottom: ResponsiveSizeUtil.adaptiveHeight(8),
+                  ),
                   child: Image.asset(
                     AppAssets.mediaLibraryIcon,
-                    width: 18,
-                    height: 18,
+                    width: ResponsiveSizeUtil.adaptiveWidth(18),
+                    height: ResponsiveSizeUtil.adaptiveHeight(18),
                     color:
                         selectedIndex == 2 ? Colors.white : AppColors.textGray,
                   ),
@@ -94,11 +103,13 @@ class CustomBottomNavBar extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: EdgeInsets.only(
+                    bottom: ResponsiveSizeUtil.adaptiveHeight(8),
+                  ),
                   child: Image.asset(
                     AppAssets.moreIcon,
-                    width: 24,
-                    height: 24,
+                    width: ResponsiveSizeUtil.adaptiveWidth(24),
+                    height: ResponsiveSizeUtil.adaptiveHeight(24),
                     color:
                         selectedIndex == 3 ? Colors.white : AppColors.textGray,
                   ),

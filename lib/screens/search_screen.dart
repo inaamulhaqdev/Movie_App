@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movie_test_app/core/constants/app_assets.dart';
 import 'package:movie_test_app/core/constants/app_colors.dart';
+import 'package:movie_test_app/core/utils/responsive_size_util.dart';
 import 'package:provider/provider.dart';
 import 'package:movie_test_app/core/routes/app_routes.dart';
 import 'package:movie_test_app/core/widgets/category_card.dart';
@@ -134,12 +135,15 @@ class _SearchScreenState extends State<SearchScreen> {
         provider.searchResultsState is SuccessState;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+      padding: ResponsiveSizeUtil.adaptivePadding(horizontal: 14, vertical: 18),
       child: Row(
         children: [
           if (_searchController.text.isNotEmpty && !_searchFocusNode.hasFocus)
             IconButton(
-              icon: const Icon(Icons.arrow_back_ios, size: 20),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                size: ResponsiveSizeUtil.adaptiveWidth(20),
+              ),
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
               onPressed: () {
@@ -149,48 +153,54 @@ class _SearchScreenState extends State<SearchScreen> {
                 setState(() {});
               },
             ),
-          if (_searchController.text.isNotEmpty) const SizedBox(width: 8),
+          if (_searchController.text.isNotEmpty)
+            SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(8)),
           Expanded(
             child:
                 showResults
                     ? Text(
                       '${(provider.searchResultsState as SuccessState).data.length} Results Found',
-                      style: const TextStyle(
-                        fontSize: 18,
+                      style: TextStyle(
+                        fontSize: ResponsiveSizeUtil.adaptiveFontSize(18),
                         fontWeight: FontWeight.w600,
                         color: Colors.black87,
                       ),
                     )
                     : Container(
-                      height: 52,
+                      height: ResponsiveSizeUtil.adaptiveHeight(52),
                       decoration: BoxDecoration(
                         color: AppColors.searchBar,
-                        borderRadius: BorderRadius.circular(22.5),
+                        borderRadius: ResponsiveSizeUtil.adaptiveBorderRadius(
+                          22.5,
+                        ),
                       ),
                       child: Row(
                         children: [
-                          const SizedBox(width: 12),
+                          SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(12)),
                           Image.asset(
                             AppAssets.searchIcon,
-                            height: 20,
-                            width: 20,
+                            height: ResponsiveSizeUtil.adaptiveHeight(20),
+                            width: ResponsiveSizeUtil.adaptiveWidth(20),
                             color: AppColors.black,
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: ResponsiveSizeUtil.adaptiveWidth(8)),
                           Expanded(
                             child: TextField(
                               controller: _searchController,
                               focusNode: _searchFocusNode,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 hintText: 'TV shows, movies and more',
                                 hintStyle: TextStyle(
                                   color: AppColors.darkGray,
-                                  fontSize: 16,
+                                  fontSize: ResponsiveSizeUtil.adaptiveFontSize(
+                                    16,
+                                  ),
                                 ),
                                 border: InputBorder.none,
-                                contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10,
-                                ),
+                                contentPadding:
+                                    ResponsiveSizeUtil.adaptivePadding(
+                                      vertical: 10,
+                                    ),
                               ),
                               onChanged: (_) => setState(() {}),
                             ),
@@ -198,6 +208,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           IconButton(
                             icon: Image.asset(
                               AppAssets.closeIcon,
+                              height: ResponsiveSizeUtil.adaptiveHeight(18),
+                              width: ResponsiveSizeUtil.adaptiveWidth(18),
                               color: AppColors.black,
                             ),
                             onPressed: () {
@@ -230,7 +242,7 @@ class _SearchScreenState extends State<SearchScreen> {
           children: [
             if (shouldShowCount && provider.searchResultsState is SuccessState)
               Padding(
-                padding: const EdgeInsets.symmetric(
+                padding: ResponsiveSizeUtil.adaptivePadding(
                   horizontal: 16,
                   vertical: 8,
                 ),
@@ -238,8 +250,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     '${(provider.searchResultsState as SuccessState).data.length} Results Found',
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: ResponsiveSizeUtil.adaptiveFontSize(16),
                       fontWeight: FontWeight.w600,
                       color: Colors.black87,
                     ),
@@ -255,19 +267,33 @@ class _SearchScreenState extends State<SearchScreen> {
                 onSuccess:
                     (movies) =>
                         movies.isEmpty
-                            ? const Center(child: Text('No results found'))
+                            ? Center(
+                              child: Text(
+                                'No results found',
+                                style: TextStyle(
+                                  fontSize: ResponsiveSizeUtil.adaptiveFontSize(
+                                    16,
+                                  ),
+                                ),
+                              ),
+                            )
                             : Container(
                               color: AppColors.lightGray,
                               child: ListView.builder(
                                 controller: _scrollController,
-                                padding: const EdgeInsets.all(16),
+                                padding: ResponsiveSizeUtil.adaptivePadding(
+                                  all: 16,
+                                ),
                                 itemCount:
                                     movies.length +
                                     (provider.isLoadingMore ? 1 : 0),
                                 itemBuilder: (context, index) {
                                   if (index == movies.length) {
                                     return Container(
-                                      padding: const EdgeInsets.all(16.0),
+                                      padding:
+                                          ResponsiveSizeUtil.adaptivePadding(
+                                            all: 16.0,
+                                          ),
                                       alignment: Alignment.center,
                                       child: const CircularProgressIndicator(),
                                     );
@@ -340,13 +366,13 @@ class _SearchScreenState extends State<SearchScreen> {
               (genres) => Container(
                 color: CupertinoColors.systemGroupedBackground,
                 child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 1.4,
-                    mainAxisSpacing: 14,
-                    crossAxisSpacing: 14,
+                    mainAxisSpacing: ResponsiveSizeUtil.adaptiveHeight(14),
+                    crossAxisSpacing: ResponsiveSizeUtil.adaptiveWidth(14),
                   ),
-                  padding: const EdgeInsets.all(14),
+                  padding: ResponsiveSizeUtil.adaptivePadding(all: 14),
                   itemCount: genres.length,
                   itemBuilder: (context, index) {
                     final genreEntry = genres.entries.elementAt(index);
