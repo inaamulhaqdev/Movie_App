@@ -15,6 +15,41 @@ class TheaterSeatSelectionScreenState
   final List<String> selectedSeats = ['4-3'];
   final double totalPrice = 50.0;
 
+  // Zoom scale factor - controls the size of seats
+  double _zoomScale = 1.0;
+  // Min and max zoom limits
+  final double _minZoom = 0.8;
+  final double _maxZoom = 2.0;
+  // Zoom step amount
+  final double _zoomStep = 0.2;
+
+  // Create a ScrollController to link with the scrollbar
+  final ScrollController _scrollController = ScrollController();
+
+  // Function to increase zoom
+  void _zoomIn() {
+    setState(() {
+      if (_zoomScale < _maxZoom) {
+        _zoomScale += _zoomStep;
+      }
+    });
+  }
+
+  // Function to decrease zoom
+  void _zoomOut() {
+    setState(() {
+      if (_zoomScale > _minZoom) {
+        _zoomScale -= _zoomStep;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,6 +118,8 @@ class TheaterSeatSelectionScreenState
           const SizedBox(height: 20),
           Expanded(
             child: SingleChildScrollView(
+              controller: _scrollController,
+              scrollDirection: Axis.horizontal,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
@@ -93,18 +130,38 @@ class TheaterSeatSelectionScreenState
               ),
             ),
           ),
+          // Zoom buttons
           Padding(
-            padding: const EdgeInsets.only(bottom: 12.0),
+            padding: const EdgeInsets.only(bottom: 12.0, top: 4.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _buildZoomButton(Icons.add),
+                _buildZoomButton(Icons.add, _zoomIn),
                 SizedBox(width: 10),
-                _buildZoomButton(Icons.remove),
+                _buildZoomButton(Icons.remove, _zoomOut),
                 SizedBox(width: 12),
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Scrollbar(
+              controller: _scrollController,
+              thumbVisibility: true,
+              trackVisibility: true,
+              thickness: 6,
+              radius: const Radius.circular(50.0),
+              child: Container(
+                height: 5,
+                decoration: BoxDecoration(
+                  color: AppColors.dividerGray,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 10),
         ],
       ),
     );
@@ -116,6 +173,7 @@ class TheaterSeatSelectionScreenState
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
             width: 20,
@@ -129,14 +187,12 @@ class TheaterSeatSelectionScreenState
             ),
           ),
 
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (int col = 1; col <= totalColumns; col++)
-                  _buildSeat(rowNumber, col),
-              ],
-            ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (int col = 1; col <= totalColumns; col++)
+                _buildSeat(rowNumber, col),
+            ],
           ),
 
           const SizedBox(width: 20),
@@ -171,7 +227,7 @@ class TheaterSeatSelectionScreenState
     bool isGap = (col == 3 || col == 9 || col == 15);
 
     if (isGap) {
-      return const SizedBox(width: 20);
+      return SizedBox(width: 20 * _zoomScale);
     }
 
     String seatId = '$row-$col';
@@ -210,30 +266,36 @@ class TheaterSeatSelectionScreenState
       },
       child: Image.asset(
         AppAssets.seat,
-        height: 12,
-        width: 16,
+        height: 12 * _zoomScale,
+        width: 16 * _zoomScale,
         color: seatColor,
       ),
     );
   }
 
-  Widget _buildZoomButton(IconData icon) {
+  Widget _buildZoomButton(IconData icon, VoidCallback onPressed) {
     return Container(
-      width: 30,
-      height: 30,
       decoration: BoxDecoration(
+        shape: BoxShape.circle,
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
+
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey.withOpacity(0.4),
             spreadRadius: 1,
             blurRadius: 2,
             offset: const Offset(0, 1),
           ),
         ],
       ),
-      child: Icon(icon, color: AppColors.black, size: 18),
+      child: SizedBox(
+        height: 40,
+        width: 40,
+        child: IconButton(
+          icon: Icon(icon, color: AppColors.black, size: 18),
+          onPressed: onPressed,
+        ),
+      ),
     );
   }
 
@@ -260,6 +322,7 @@ class TheaterSeatSelectionScreenState
               children: [
                 _buildSeatLegend(AppColors.gold, "Selected"),
                 _buildSeatLegend(AppColors.textGray, "Not available  "),
+                SizedBox(width: 40),
               ],
             ),
           ),
@@ -270,6 +333,7 @@ class TheaterSeatSelectionScreenState
               children: [
                 _buildSeatLegend(Colors.deepPurple, "VIP (150\$)"),
                 _buildSeatLegend(AppColors.accentBlue, "Regular (50 \$)"),
+                SizedBox(width: 40),
               ],
             ),
           ),
